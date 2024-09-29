@@ -1,0 +1,16 @@
+{
+ "aironet": [
+     {
+        "host_ip": "10.51.10.3",
+        "hostname": "41-APNImugol",
+        "username": "admin",
+        "password": "pass",
+        "ssid": "41-SOGOWIFI-mugol",
+        "authentication": "open",
+        "key-man": "wpa",
+        "wifi-pass": "C1sc0123",
+        "channel": "9",
+        "enc-mod": "tkip"
+     }
+    ]
+}

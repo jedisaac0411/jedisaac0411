@@ -1,0 +1,81 @@
+INSTALL SSHD TO WINDOWS SERVER USING POWERSHELL
+TURN OFF FIREWALLS
+
+@CENTOS
+ssh administrator@0.0.0.0
+
+*********************************************************
+SOLO 
+#nano hosts
+
+[win22]
+0.0.0.0
+
+[win22:vars]
+ansible_user=administrator
+ansible_password=C1sc0123
+ansible_connection=winrm
+ansible_port=5985
+ansible_winrm_transport=ntlm
+ansible_winrm_server_cert_validation=ignore
+
+*********************************************************
+MULTIPLE SERVER
+#nano hosts
+
+[win22]
+server1 ansible_host=192.168.1.101
+server2 ansible_host=192.168.1.102
+server3 ansible_host=192.168.1.103
+# Add more servers as needed
+[win22:vars]
+ansible_user=administrator
+ansible_password=C1sc0123
+ansible_connection=winrm
+ansible_port=5985
+ansible_winrm_transport=ntlm
+ansible_winrm_server_cert_validation=ignore
+
+
+********************************************************
+
+#INSTALL DNS SERVER
+#nano dns.yml
+
+---
+- name: Install DNS Server Role using PowerShell
+  hosts: win22  # Replace with the appropriate host or group
+  gather_facts: yes
+  tasks:
+    - name: Install DNS Server Role with Management Tools
+      win_shell: |
+        Install-WindowsFeature -name DNS -IncludeManagementTools
+      register: dns_install
+
+    - name: Reboot after DNS installation
+      win_reboot:
+        reboot_timeout: 600
+      when: dns_install.changed
+
+********************************************************
+
+#UNINSTALL DNS SERVER
+#nano nodns.yml
+
+---
+- name: Uninstall DNS Server Role using PowerShell
+  hosts: win22  # Replace with the appropriate host or group
+  gather_facts: yes
+  tasks:
+    - name: Uninstall DNS Server Role with Management Tools
+      win_shell: |
+        Uninstall-WindowsFeature -name DNS -IncludeManagementTools
+      register: dns_uninstall
+
+    - name: Reboot after DNS uninstallation
+      win_reboot:
+        reboot_timeout: 600
+      when: dns_uninstall.changed
+
+
+
