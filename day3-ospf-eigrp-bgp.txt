@@ -1,0 +1,55 @@
+practice 1 # write a floating static route:
+conf t 
+ip route 0.0.0.0 0.0.0.0 10.2.2.2.2 1
+ip route 0.0.0.0 0.0.0.0 10.2.2.2.1 2
+
+write afloating static route for a2
+ip route 0.0.0.0 0.0.0.0 192.168.1.130 1
+ip route 0.0.0.0 0.0.0.0 192.168.1.129 2
+
+129 10.2.1.1
+conf t
+ip route 192.168.1.128 255.255.255.224 10.2.1.2 1
+ip route 192.168.1.129 255.255.255.255 10.2.1.1
+
+p1 default route
+ip route 0.0.0.0 0.0.0.0 10.2.1.1 1
+ip route 0.0.0.0 0.0.0.0 10.2.1.2 2
+
+eigrp and ospf
+
+router eigrp 100
+net 10.1.4.4 0.0.0.3
+net 10.2.1.0 0.0.0.255
+net 10.2.2.0 0.0.0.255
+net 192.168.1.128 0.0.0.31
+
+router ospf 100
+net 10.1.4.4 0.0.0.3 area 0
+net 10.2.1.0 0.0.0.255 area 0
+net 10.2.2.0 0.0.0.255 area 0
+net 192.168.1.128 0.0.0.31 area 0
+
+router bgp 100
+net 10.1.4.4 255.255.255.252
+net 10.2.1.0 255.255.255.0
+net 10.2.2.0 255.255.255.0
+net 192.168.1.128 255.255.255.224
+
+
+how to configure bgp
+@R1
+router bgp 1
+bgp router-id 1.1.1.1 (optional)
+bgp log-neighbor-changes
+neighbor 209.9.9.3 remote-as 3
+neighbor 207.7.7.2 remote-as 2
+neighbor 208.8.8.4 remote-as 45
+address-family ipv4
+neighbor activate
+neighbor activate
+neighbor activate
+network 209.9.9.0 mask 255.255.255.0
+network 207.7.7.0 mask 255.255.255.0
+network 208.8.8.0 mask 255.255.255.0
+network 10.1.1.0 mask 255.255.255.252

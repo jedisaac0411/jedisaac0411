@@ -187,7 +187,9 @@ router ospf 1
 router-id 4.4.4.4
 network 4.4.4.4 0.0.0.0 area 34
 network 10.1.1.8 0.0.0.3 area 34
-
+interface e1/2
+	ip ospf network point-to-point
+	!!eto lab exam point-to-point
 R3:
 config t
 Int loopback 0
@@ -197,7 +199,9 @@ router-id 3.3.3.3
 network 3.3.3.3 0.0.0.0 area 0
 network 10.1.1.4 0.0.0.3 area 0
 network 10.1.1.8 0.0.0.3 area 34
-
+interface e1/2
+	ip ospf network point-to-point
+	
 R2:
 config t
 Int loopback 0
@@ -207,7 +211,9 @@ router-id 2.2.2.2
 network 2.2.2.2 0.0.0.0 area 0
 network 10.1.1.4 0.0.0.3 area 0
 network 10.1.1.0 0.0.0.3 area 12
-
+interface e1/2
+	ip ospf network point-to-point
+	
 R1:
 config t
 Int loopback 0
@@ -216,11 +222,14 @@ router ospf 1
 router-id 1.1.1.1
 network 1.1.1.1 0.0.0.0 area 12
 network 10.1.1.0 0.0.0.3 area 12
+interface e1/0
+	ip ospf network point-to-point
 
 OSPF checking:
 sh ip protocols
 sh ip ospf neighbor
 sh ip ospf database
+sh ip route ospf
 
 @declaring Link between r3 and r4 as Point to Point:
 R3:
